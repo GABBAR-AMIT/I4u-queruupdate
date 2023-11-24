@@ -1,0 +1,61 @@
+{% extends "adminbase.html" %}
+{% block adminpage %}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<div class="row">
+    <div class="col">
+        <div class="card card-3d">
+            <div class="card-body">
+                <h2 class="card-title">Add a Project</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{projects.id}}">
+                    <div class="mb-3">
+                        <label for="branchName" class="form-label">Title</label>
+                        <input type="text" class="form-control input-3d" id="branchName" name="title"  value="{{projects.title}}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Image-1</label>
+                        <input type="file" class="form-control" id="exampleInputPassword1" name='image' >
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Image-2</label>
+                        <input type="file" class="form-control" id="exampleInputPassword1" name='image2' >
+                    </div>
+                    <div class="mb-3">
+                        <label for="branchSelect" class="form-label">Select Branch</label>
+                        <select class="form-select" id="branchSelect" aria-label="Select branch" name='branch' value="{{projects.branch}}">
+                            {% for i in branch %}
+                                <option value="{{i.name}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea  class="form-control" id="description" name='description' > {{projects.description}} </textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="components" class="form-label">Components</label>
+                        <textarea class="form-control" id="components" name='components'>{{projects.components}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appArea" class="form-label">Application area</label>
+                        <textarea class="form-control" id="appArea" name='application_area'>{{projects.application_area}}</textarea>
+                    </div>                    
+                    <button type="submit" class="btn btn-primary btn-block btn-3d">Update this project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        // Prevent form submission on Enter key press, except for textareas
+        $('form').keypress(function (e) {
+            if (e.which === 13 && e.target.nodeName !== 'TEXTAREA') {
+                e.preventDefault();
+                // Perform your custom logic here instead of submitting the form
+            }
+        });
+    });
+</script>
+{% endblock adminpage %}
