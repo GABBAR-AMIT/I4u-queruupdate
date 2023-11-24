@@ -162,9 +162,14 @@ def editquery(request, pk):
         item.topic = topic
         item.query = query_text
         
-        # Save the updated query
-        item.save()
-        return redirect('q_dash')  # Redirect to the dashboard after editing
+        try:
+            # Save the updated query
+            item.save()
+            return redirect('q_dash')  # Redirect to the dashboard after editing
+        except Exception as e:
+            # Handle the exception or display an error message
+            print(f"Error saving query: {e}")
+
     return render(request, 'edit_query.html', {'item': item, 'total_amount': item.total_amount, 'advance': item.advance, 'balance': item.balance})
 
 def abranches(request):
