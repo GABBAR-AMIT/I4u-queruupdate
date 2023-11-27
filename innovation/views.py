@@ -118,8 +118,10 @@ def admin_login(request):
 
     return render(request, 'login.html')
 
+
 def aquery_detail(request):
     items = Register.objects.all().order_by('-id')
+
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -128,12 +130,19 @@ def aquery_detail(request):
         branch = request.POST.get('branch')
         topic = request.POST.get('topic')
         query = request.POST.get('query')
+        total_amount = request.POST.get('total_amount')
+        advance = request.POST.get('advance')
+        balance = request.POST.get('balance')
+
         if name:
             Register.objects.create(
                 name=name, email=email, degree=degree,
-                phone=phone, branch=branch, topic=topic, query=query
+                phone=phone, branch=branch, topic=topic, query=query,
+                total_amount=total_amount, advance=advance, balance=balance
             )
-        return render(request, 'a_querydetail.html', {'data': items})
+        
+        return redirect('a_query_detail')  # Redirect to the view displaying query details
+
     return render(request, 'a_querydetail.html', {'data': items})
 
 def delquery(request, pk):
@@ -152,7 +161,10 @@ def editquery(request, pk):
         branch = request.POST.get('branch')
         topic = request.POST.get('topic')
         query_text = request.POST.get('query')
-        
+        total_amount = request.POST.get('total_amount')
+        advance = request.POST.get('advance')
+        balance = request.POST.get('balance')
+
         # Update the existing query with new values
         item.name = name
         item.email = email
@@ -161,7 +173,10 @@ def editquery(request, pk):
         item.branch = branch
         item.topic = topic
         item.query = query_text
-        
+        item.total_amount = total_amount
+        item.advance = advance
+        item.balance = balance
+
         try:
             # Save the updated query
             item.save()
@@ -170,7 +185,7 @@ def editquery(request, pk):
             # Handle the exception or display an error message
             print(f"Error saving query: {e}")
 
-    return render(request, 'edit_query.html', {'item': item, 'total_amount': item.total_amount, 'advance': item.advance, 'balance': item.balance})
+    return render(request, 'edit_query.html', {'item': item})
 
 def abranches(request):
     item=Branches.objects.all().order_by('-id')
